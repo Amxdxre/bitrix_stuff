@@ -12,4 +12,17 @@ class Api extends Controller
         $allUsers = UserTable::query()->setSelect(array('ID', 'LAST_NAME'))->fetchAll();
         return $allUsers;
     }
+
+    public function addPerfumeAction()
+    {
+        $request = $this->getRequest();
+        $producer = $request->get('producer');
+        $name = $request->get('name');
+        $producerCountry = $request->get('producer_country');
+        $value = $request->get('value');
+        $price = $request->get('price');
+        $perfumeRepository = new PerfumeRepository();
+        $perfumeRepository->create($producer,$name,$value,$price,$producerCountry);
+
+    }
 }

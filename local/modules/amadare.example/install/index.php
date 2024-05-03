@@ -19,6 +19,7 @@ class amadare_example extends CModule
     public function DoInstall()
     {
         \Bitrix\Main\ModuleManager::registerModule($this->MODULE_ID);
+        \Bitrix\Main\Loader::requireModule($this->MODULE_ID);
         $this->InstallDB();
     }
 
@@ -30,6 +31,7 @@ class amadare_example extends CModule
 
     public function InstallDB()
     {
+        //region:Подписываюсь на события.
         $eventManager = \Bitrix\Main\EventManager::getInstance();
         $eventManager->registerEventHandler(
             'main',
@@ -38,6 +40,15 @@ class amadare_example extends CModule
             \amadare\example\ExampleEventHandlers::class,
             'onBeforeUserAddHandler'
         );
+        //endregion
+
+        //region:Создаю таблицы.
+        $connection = \Bitrix\Main\Application::getConnection();
+        $isTableExists = $connection->isTableExists(\amadare\example\entity\PerfumeTable::getTableName());
+        if (!$isTableExists) {
+             \amadare\example\entity\PerfumeTable::getEntity()->createDbTable();
+        }
+        //endregion
     }
 
     public function UnInstallDB()
