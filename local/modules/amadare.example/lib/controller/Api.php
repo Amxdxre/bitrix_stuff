@@ -2,6 +2,7 @@
 
 namespace amadare\example\controller;
 
+use Bitrix\Crm\DealTable;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\UserTable;
 
@@ -24,5 +25,27 @@ class Api extends Controller
         $perfumeRepository = new PerfumeRepository();
         $perfumeRepository->create($producer,$name,$value,$price,$producerCountry);
 
+    }
+
+    public function getExpenseAction()
+    {
+        \Bitrix\Main\Loader::requireModule('crm');
+
+        $arFields = array(
+            'UF_CRM_1715713586',
+        );
+
+        $arDeals = DealTable::getList(array(
+            'select' => $arFields,
+            'filter' => array('!STAGE_SEMANTIC_ID' => array('F', 'S'))
+
+        ))->fetchAll();
+
+        $sum = 0;
+
+        foreach ($arDeals as $value) {
+            $sum = $sum + (float)$value['UF_CRM_1715713586'];
+        }
+        return $sum;
     }
 }
