@@ -47,6 +47,22 @@ class amadare_example extends CModule
             \amadare\example\ExampleEventHandlers::class,
             'onPrologHandler'
         );
+
+        $eventManager->registerEventHandler(
+            'crm',
+            'OnBeforeCrmDealUpdate',
+            $this->MODULE_ID,
+            \amadare\example\ExampleEventHandlers::class,
+            'onBeforeDealUpdateHandler'
+        );
+
+        $eventManager->registerEventHandler(
+            'crm',
+            'OnBeforeCrmDealAdd',
+            $this->MODULE_ID,
+            \amadare\example\ExampleEventHandlers::class,
+            'onBeforeDealUpdateHandler'
+        );
         //endregion
 
         //region:Создаю таблицы.
@@ -74,6 +90,20 @@ class amadare_example extends CModule
             $this->MODULE_ID,
             \amadare\example\ExampleEventHandlers::class,
             'onPrologHandler'
+        );
+        $eventManager->unRegisterEventHandler(
+            'crm',
+            'OnBeforeCrmDealUpdate',
+            $this->MODULE_ID,
+            \amadare\example\ExampleEventHandlers::class,
+            'onBeforeDealUpdateHandler'
+        );
+        $eventManager->unRegisterEventHandler(
+            'crm',
+            'OnBeforeCrmDealAdd',
+            $this->MODULE_ID,
+            \amadare\example\ExampleEventHandlers::class,
+            'onBeforeDealUpdateHandler'
         );
 
     }
